@@ -17,7 +17,7 @@
                                                 <label for="inputEmail">Email address</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input v-model="password" class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                                                <input v-model="password" v-on:keyup.enter="login()" class="form-control" id="inputPassword" type="password" placeholder="Password" />
                                                 <label for="inputPassword">Password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
@@ -78,16 +78,16 @@ module.exports = {
             
             if(resp.data.status === 1){
                 
-                // //save token into cookies
+                //save token into cookies
                 if(this.$cookies.isKey('Authorization')){
                 //     //jika ada maka dihapus
                     this.$cookies.remove('Authorization')
                 }
 
-                // //jika sudah dihapus maka simpan lagi data terbaru dari resp
+                //jika sudah dihapus maka simpan lagi data terbaru dari resp
                 this.$cookies.set('Authorization', resp.data.token)
                 this.componentName = "app"
-                location.reload();
+                location.reload(); //digunakan untuk reload
             } else {
                 this.componentName = "login"
             }

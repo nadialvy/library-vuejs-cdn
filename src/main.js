@@ -11,6 +11,16 @@ var router = [
         path:"/login",
         name: "Login",
         component: httpVueLoader("./src/components/Login.vue")
+    },
+    {
+        path:"/member",
+        name: "Member",
+        component: httpVueLoader("./src/components/Member.vue")
+    },
+    {
+        path:"/book",
+        name: "Book",
+        component: httpVueLoader("./src/components/Book.vue")
     }
 ];
 
@@ -24,8 +34,10 @@ var routers = new VueRouter({
 var app = new Vue({
     el: "#app", 
     components:{
-        'app' : httpVueLoader("./src/components/App.vue"),
+        'app' : httpVueLoader("./src/components/Apps.vue"),
         'login' : httpVueLoader("./src/components/Login.vue"),
+        'member' : httpVueLoader("./src/components/Member.vue"),
+        'book' : httpVueLoader("./src/components/Book.vue")
     },
     data: { 
         user : {
@@ -54,7 +66,7 @@ var app = new Vue({
                 axios.get(api_url + '/LoginCheck', token)
                 .then(resp => {
                     console.log(resp);
-                    if(resp.request.statusText === 'OK' && resp.request.status === 200){
+                    if(resp.data.status === 1){
                         this.componentName = 'app'
                     } else {
                         this.componentName = 'login'
