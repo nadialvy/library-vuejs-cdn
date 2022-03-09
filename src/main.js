@@ -4,8 +4,8 @@ var api_url = "http://localhost:8000/api";
 var router = [
     {
         path:"/", 
-        name: "App", 
-        component: httpVueLoader("./src/components/App.vue") 
+        name: "Home", 
+        component: httpVueLoader("./src/components/Home.vue") 
     },
     {
         path:"/login",
@@ -20,14 +20,14 @@ var router = [
     {
         path:"/book",
         name: "Book",
-        component: httpVueLoader("./src/components/Book.vue")
+        component: httpVueLoader("./src/components/Books.vue")
     }
 ];
 
 // var routers = new VueRouter({ routes : router, base: "/" }) //instance vue router
 var routers = new VueRouter({
     routes: router,
-    mode: 'history',
+    // mode: 'history',
     base: '/'
 });
 
@@ -36,8 +36,8 @@ var app = new Vue({
     components:{
         'app' : httpVueLoader("./src/components/Apps.vue"),
         'login' : httpVueLoader("./src/components/Login.vue"),
-        'member' : httpVueLoader("./src/components/Member.vue"),
-        'book' : httpVueLoader("./src/components/Book.vue")
+        // 'home': httpVueLoader("./src/components/Home.vue"),
+        // 'member' : httpVueLoader("./src/components/Member.vue")
     },
     data: { 
         user : {
