@@ -32,7 +32,7 @@
                                 <td> {{ member.group }} </td>
                                 <td>
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
-                                    <button class="btn btn-danger" ><i class="fas fa-trash-alt fa-fw"></i></button>
+                                    <button class="btn btn-danger" v-on:click="deleteData(member.student_id)" ><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -170,6 +170,23 @@
                 }
 
                 this.getData()
+            },
+            deleteData(id){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
+
+                if(confirm('Are you sure you want to delete this data?')){
+                    axios.delete(api_url + '/Students/' +id , token)
+                    .then(resp => {
+                        if(resp.data.status === 1){
+                            alert('Success delete data')
+                            this.getData()
+                        }
+                    })
+                }
             }
 
         },
