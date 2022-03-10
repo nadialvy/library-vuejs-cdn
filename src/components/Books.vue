@@ -31,7 +31,7 @@
                                 <td> {{ i+1 }} </td>
                                 <td> {{ book.book_name }} </td>
                                 <td> {{ book.author }} </td>
-                                <td> {{ book.desc }} </td>
+                                <td> {{ book.desc | snippet }} </td>
                                 <td>
                                     <button class="btn btn-info" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
                                     <button class="btn btn-danger" v-on:click="deleteData(book.book_id)"><i class="fas fa-trash-alt fa-fw"></i></button>

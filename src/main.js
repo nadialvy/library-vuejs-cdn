@@ -1,3 +1,7 @@
+Vue.filter('snippet', function(value){
+    return value.slice(0,70) + '...';
+  });
+
 var api_url = "http://localhost:8000/api";
 
 // konfigurasi route 
