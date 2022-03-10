@@ -26,12 +26,12 @@
                         </thead>
                         <tbody>
                             <tr v-for="(member, index) in members" :key="index">
-                                <td> {{ index+1 }} </td>
+                                <td> {{ member.student_id }} </td>
                                 <td> {{ member.student_name }} </td>
                                 <td> {{ member.class_name }} </td>
                                 <td> {{ member.group }} </td>
                                 <td>
-                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                    <button class="btn btn-info"  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
                                     <button class="btn btn-danger" v-on:click="deleteData(member.student_id)" ><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
@@ -63,7 +63,7 @@
 
                     <div class="mb-3">
                         <label for="gender">Gender</label>
-                        <select class="form-control" id="gender" v-model="gender">
+                        <select class="form-control" id="gender" v-model="gender" required>
                             <option value="L">Male</option>
                             <option value="P">Female</option>
                         </select>
@@ -76,7 +76,7 @@
 
                     <div class="mb-3">
                         <label for="class">Class</label>
-                        <select class="form-control" id="class" v-model="grade">
+                        <select class="form-control" id="class" v-model="grade" required>
                             <option 
                                 v-for="grade in grades" :key="grade" 
                                 :value="grade.class_id"
@@ -106,6 +106,7 @@
                 action: '',
 
                 //v-model
+                member_id: '',
                 name: '',
                 date_of_birth: '',
                 gender: '',
@@ -124,8 +125,9 @@
 
                 axios.get(api_url + '/Students', token)
                 .then(resp => {
-                    console.log(resp)
                     this.members = resp.data
+                    
+                    console.log(this.members)
                 })
 
                 axios.get(api_url + '/Grade', token)
@@ -142,8 +144,14 @@
                 this.grade = '',
                 this.action = 'Add'
             },
-            editData(){
-
+            editData(memberData){
+                this.member_id = memberData.student_id,
+                this.name = memberData.student_name,
+                this.date_of_birth = memberData.date_of_birth,
+                this.gender = memberData.gender,
+                this.address = memberData.address,
+                this.grade = memberData.class_id,
+                this.action = 'Update'
             },
             saveData(){
                 let token = {
@@ -166,7 +174,10 @@
                         alert(resp.data.message)
                     })
                 }else {
-
+                    axios.put(api_url + '/Students/' + this.member_id, form, token)
+                    .then(resp => {
+                        alert(resp.data.message)
+                    })
                 }
 
                 this.getData()
