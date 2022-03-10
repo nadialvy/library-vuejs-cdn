@@ -33,8 +33,8 @@
                                 <td> {{ book.author }} </td>
                                 <td> {{ book.desc }} </td>
                                 <td>
-                                    <button class="btn btn-info"><i class="fas fa-pencil-alt fa-fw"></i></button>
-                                    <button class="btn btn-danger"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                    <button class="btn btn-info" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                    <button class="btn btn-danger" v-on:click="deleteData(book.book_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -55,23 +55,23 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="">Book Name</label>
-                        <input type="text" v-model="book_name" class="form-control">
+                        <input type="text" v-model="book_name" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="">Author</label>
-                        <input type="text" v-model="author" class="form-control">       
+                        <input type="text" v-model="author" class="form-control" required>       
                     </div>
 
                     <div class="mb-3">
                         <label for="">Description</label>
-                        <input type="textarea" v-model="desc" class="form-control">
+                        <input type="textarea" v-model="desc" class="form-control" required>
                     </div>
                         
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button v-on="saveData()" type="button" class="btn btn-primary">{{this.action}}</button>
+                    <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
                 </div>
                 </div>
             </div>
@@ -101,7 +101,6 @@
                 }
                 axios.get(api_url + '/Book', token)
                 .then(resp => {
-                    console.log(resp.data)
                     this.books = resp.data
                 })
 
@@ -114,15 +113,21 @@
                 this.desc= '' ,
                 this.action= 'Add'
             },
+            editData(bookData){
+                this.book_id = bookData.book_id,
+                this.book_name = bookData.book_name,
+                this.author = bookData.author,
+                this.desc = bookData.desc
+                this.action = 'Update'
+                
+            },
             saveData(){
-                //mapping header token first
                 let token = {
                     headers : {
                         'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
                     }
                 }
 
-                //mapping data
                 //data that will be post/put
                 let form = {
                     //be        //state
@@ -135,18 +140,36 @@
                     //post form into book with token permission
                     axios.post(api_url + '/Book', form, token)
                     .then(resp => {
-                        if(resp.data.status === 1){
-                            // alert(resp.data.message)
-
-                            this.getData()
-                        }else {
-
-                        }
+                        alert(resp.data.message)
                     })
                 } else {
-
+                    //put
+                    axios.put(api_url + '/Book/' + this.book_id, form, token)
+                    .then(resp => {
+                        alert(resp.data.message)
+                    })
                 }
-            }
+
+                this.getData()
+            },
+            deleteData(id){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
+
+                if(confirm('Are you sure you want to delete this data?')){
+                    axios.delete(api_url + '/Book/' + id, token)
+                    .then(resp => {
+                        if(resp.data.status === 1){
+                            alert('Success delete data')
+                            this.getData()
+                        }
+
+                    })
+                }
+            },
         },
         mounted(){
             this.getData()
