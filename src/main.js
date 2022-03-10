@@ -15,7 +15,7 @@ var router = [
     {
         path:"/member",
         name: "Member",
-        component: httpVueLoader("./src/components/Member.vue")
+        component: httpVueLoader("./src/components/Members.vue")
     },
     {
         path:"/book",
@@ -35,9 +35,7 @@ var app = new Vue({
     el: "#app", 
     components:{
         'app' : httpVueLoader("./src/components/Apps.vue"),
-        'login' : httpVueLoader("./src/components/Login.vue"),
-        // 'home': httpVueLoader("./src/components/Home.vue"),
-        // 'member' : httpVueLoader("./src/components/Member.vue")
+        'login' : httpVueLoader("./src/components/Login.vue")
     },
     data: { 
         user : {
