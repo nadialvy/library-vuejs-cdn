@@ -171,12 +171,13 @@
                 if(this.action === 'Add'){
                     axios.post(api_url + '/Students', form, token)
                     .then(resp => {
-                        alert(resp.data.message)
+                        swal("Good Job", resp.data.message, "success")
+                        // alert(resp.data.message)
                     })
                 }else {
                     axios.put(api_url + '/Students/' + this.member_id, form, token)
                     .then(resp => {
-                        alert(resp.data.message)
+                        swal("Good Job", resp.data.message, "success")
                     })
                 }
 
@@ -193,7 +194,7 @@
                     axios.delete(api_url + '/Students/' +id , token)
                     .then(resp => {
                         if(resp.data.status === 1){
-                            alert('Success delete data')
+                            swal("Good Job", resp.data.message, "success")
                             this.getData()
                         }
                     })

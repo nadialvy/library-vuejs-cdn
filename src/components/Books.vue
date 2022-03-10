@@ -140,13 +140,13 @@
                     //post form into book with token permission
                     axios.post(api_url + '/Book', form, token)
                     .then(resp => {
-                        alert(resp.data.message)
+                         swal("Good Job", resp.data.message, "success")
                     })
                 } else {
                     //put
                     axios.put(api_url + '/Book/' + this.book_id, form, token)
                     .then(resp => {
-                        alert(resp.data.message)
+                        swal("Good Job", resp.data.message, "success")
                     })
                 }
 
@@ -163,7 +163,7 @@
                     axios.delete(api_url + '/Book/' + id, token)
                     .then(resp => {
                         if(resp.data.status === 1){
-                            alert('Success delete data')
+                             swal("Good Job", resp.data.message, "success")
                             this.getData()
                         }
 
