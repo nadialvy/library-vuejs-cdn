@@ -140,7 +140,8 @@
                     //post form into book with token permission
                     axios.post(api_url + '/Book', form, token)
                     .then(resp => {
-                         swal("Good Job", resp.data.message, "success")
+                        // console.log(resp.data)
+                        swal("Good Job", resp.data.message, "success")
                     })
                 } else {
                     //put
@@ -159,16 +160,23 @@
                     }
                 }
 
-                if(confirm('Are you sure you want to delete this data?')){
-                    axios.delete(api_url + '/Book/' + id, token)
-                    .then(resp => {
-                        if(resp.data.status === 1){
-                             swal("Good Job", resp.data.message, "success")
-                            this.getData()
-                        }
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    buttons: [true, 'Yes delete it']
+                    }).then((value) => {
+                    if (value) {
+                       axios.delete(api_url + '/Book/' + id, token)
+                        .then(resp => {
+                            if(resp.data.status === 1){
+                                swal("Good Job", resp.data.message, "success")
+                                this.getData()
+                            }
 
-                    })
-                }
+                        })
+                    }
+                })
             },
         },
         mounted(){

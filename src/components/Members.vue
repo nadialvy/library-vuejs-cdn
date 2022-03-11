@@ -190,15 +190,22 @@
                     }
                 }
 
-                if(confirm('Are you sure you want to delete this data?')){
-                    axios.delete(api_url + '/Students/' +id , token)
-                    .then(resp => {
-                        if(resp.data.status === 1){
-                            swal("Good Job", resp.data.message, "success")
-                            this.getData()
-                        }
-                    })
-                }
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    buttons: [true, 'Yes delete it']
+                    }).then((value) => {
+                    if (value) {
+                       axios.delete(api_url + '/Students/' +id , token)
+                        .then(resp => {
+                            if(resp.data.status === 1){
+                                swal("Good Job", resp.data.message, "success")
+                                this.getData()
+                            }
+                        })
+                    }
+                })
             }
 
         },
