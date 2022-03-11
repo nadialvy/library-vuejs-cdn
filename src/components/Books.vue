@@ -11,8 +11,10 @@
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i>
                         List Book
-
-                    <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right">Add</button>
+                    <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right pt-2 pb-2">Add</button>
+                    <div class="dataTable-search float-right mr-4">
+                        <input class="dataTable-input" placeholder="Search book name..." type="text" v-model="search">
+                    </div>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple" class="table table-hover table-striped">
@@ -27,7 +29,7 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(book, i) in books" :key="i">
+                            <tr v-for="(book, i) in filteredBooks" :key="i">
                                 <td> {{ i+1 }} </td>
                                 <td> {{ book.book_name }} </td>
                                 <td> {{ book.author }} </td>
@@ -65,7 +67,7 @@
 
                     <div class="mb-3">
                         <label for="">Description</label>
-                        <input type="textarea" v-model="desc" class="form-control" required>
+                        <textarea v-model="desc" class="form-control" required style="height: 100px"></textarea>
                     </div>
                         
                 </div>
@@ -88,7 +90,8 @@
                 author:'' ,
                 desc: '' ,
                 action: '' ,
-                books : []
+                books : [],
+                search: ''
             }
         },
         methods: {
@@ -178,6 +181,13 @@
                     }
                 })
             },
+        },
+        computed: {
+            filteredBooks: function(){
+                return this.books.filter((book) => {
+                    return book.book_name.toLowerCase().match(this.search.toLowerCase());
+                });
+            }
         },
         mounted(){
             this.getData()

@@ -12,6 +12,9 @@
                     <i class="fas fa-table me-1"></i>
                         List Members
                         <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right">Add</button>
+                        <div class="dataTable-search float-right mr-4">
+                            <input class="dataTable-input" placeholder="Search member name..." type="text" v-model="search">
+                        </div>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple" class="table table-hover table-striped">
@@ -25,7 +28,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(member, index) in members" :key="index">
+                            <tr v-for="(member, index) in filteredMember" :key="index">
                                 <td> {{ member.student_id }} </td>
                                 <td> {{ member.student_name }} </td>
                                 <td> {{ member.class_name }} </td>
@@ -111,7 +114,8 @@
                 date_of_birth: '',
                 gender: '',
                 address: '',
-                grade: ''
+                grade: '',
+                search: ''
             }
            
         },
@@ -208,6 +212,13 @@
                 })
             }
 
+        },
+        computed: {
+            filteredMember(){
+                return this.members.filter((member) => {
+                    return member.student_name.toLowerCase().match(this.search.toLowerCase())
+                })
+            }
         },
         mounted(){
             this.getData()
