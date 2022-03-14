@@ -46,6 +46,46 @@
             </div>
 
             <!-- modal  -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"> {{ action }} Data </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="student_name">Student Name</label>
+                            <select class="form-control" id="student_name" v-model="student_id" required>
+                                <option 
+                                    v-for="member in members" :key="member" 
+                                    :value="member.student_id"
+                                > 
+                                        {{ member.student_name }} 
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">Date Borrowing</label>
+                            <input type="date" v-model="date_of_borrowing" class="form-control" required>       
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="">Date Returning</label>
+                            <input type="date" v-model="date_of_returning" class="form-control" required>       
+                        </div>
+                            
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -55,7 +95,13 @@
         data(){
             return{
                 borrowBooks: [],
-                search:''
+                members: [],
+                search:'',
+                action: '',
+                // v-model 
+                student_id: '',
+                date_of_borrowing: '',
+                date_of_returning: ''
             }
         },
         methods: {
@@ -69,11 +115,46 @@
                 axios.get(api_url + '/BookBorrow', token)
                 .then(resp => {
                     this.borrowBooks = resp.data
-                    console.log(this.borrowBooks)
+                    // console.log(this.borrowBooks)
+                })
+
+                axios.get(api_url + '/Students', token)
+                .then(resp => {
+                    this.members = resp.data
+                    // console.log(this.members)
                 })
             },
             addData(){
+                this.student_id = '',
+                this.date_of_borrowing = '',
+                this.date_of_returning = '',
+                this.action = 'Add'
+            },
+            updateData(){
+                
+            },
+            saveData(){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
 
+                let form = {
+                    'student_id' : this.student_id,
+                    'date_of_borrowing' : this.date_of_borrowing,
+                    'date_of_returning' : this.date_of_returning
+                }
+
+                if(this.action === 'Add'){
+                    axios.post(api_url + '/BookBorrow', token)
+                    .then(resp => {
+                        // console.log(resp)
+                        swal("Good Job", 'Success create new data', "success")
+                    })
+                } else {
+
+                }
             }
         },
         mounted(){
