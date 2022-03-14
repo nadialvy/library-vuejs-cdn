@@ -25,6 +25,11 @@ var router = [
         path:"/book",
         name: "Book",
         component: httpVueLoader("./src/components/Books.vue")
+    },
+    {
+        path:"/book_borrow",
+        name: "Book Borrows",
+        component: httpVueLoader("./src/components/BookBorrows.vue")
     }
 ];
 
