@@ -36,7 +36,7 @@
                                 <td> {{ borrowBook.date_of_borrowing }} </td>
                                 <td> {{ borrowBook.date_of_returning }} </td>
                                  <td>
-                                    <button class="btn btn-info" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                    <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
                                     <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
@@ -58,7 +58,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="student_name">Student Name</label>
-                            <select class="form-control" id="student_name" v-model="student_id" required>
+                            <select class="form-control" id="student_name" v-model="student_name" required>
                                 <option 
                                     v-for="member in members" :key="member" 
                                     :value="member.student_id"
@@ -98,8 +98,10 @@
                 members: [],
                 search:'',
                 action: '',
+                book_borrow_id: '',
+
                 // v-model 
-                student_id: '',
+                student_name: '',
                 date_of_borrowing: '',
                 date_of_returning: ''
             }
@@ -130,8 +132,12 @@
                 this.date_of_returning = '',
                 this.action = 'Add'
             },
-            updateData(){
-                
+            editData(bookBorrow){
+                this.book_borrow_id = bookBorrow.book_borrow_id,
+                this.student_name = bookBorrow.student_id,
+                this.date_of_borrowing = bookBorrow.date_of_borrowing,
+                this.date_of_returning = bookBorrow.date_of_returning,
+                this.action = 'Update'
             },
             saveData(){
                 let token = {
@@ -141,7 +147,7 @@
                 }
 
                 let form = {
-                    'student_id' : this.student_id,
+                    'student_id' : this.student_name,
                     'date_of_borrowing' : this.date_of_borrowing,
                     'date_of_returning' : this.date_of_returning
                 }
@@ -149,12 +155,16 @@
                 if(this.action === 'Add'){
                     axios.post(api_url + '/BookBorrow', token)
                     .then(resp => {
-                        // console.log(resp)
                         swal("Good Job", 'Success create new data', "success")
                     })
                 } else {
-
+                    axios.put(api_url + '/BookBorrow/' + this.book_borrow_id, form, token)
+                    .then(resp => {
+                        swal("Good Job", 'Success create new data', "success")
+                    })
                 }
+
+                this.getData()
             },
             deleteData(id){
                 let token = {
@@ -180,6 +190,9 @@
                         })
                     }
                 })
+                
+                this.getData()
+
             }
         },
         mounted(){
