@@ -37,7 +37,7 @@
                                 <td> {{ borrowBook.date_of_returning }} </td>
                                  <td>
                                     <button class="btn btn-info" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
-                                    <button class="btn btn-danger" v-on:click="deleteData(book.book_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                    <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -155,6 +155,31 @@
                 } else {
 
                 }
+            },
+            deleteData(id){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
+
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    buttons: [true, 'Yes delete it']
+                    }).then((value) => {
+                    if (value) {
+                       axios.delete(api_url + '/BookBorrow/' + id, token)
+                        .then(resp => {
+                            if(resp.data.status === 1){
+                                swal("Good Job", resp.data.message, "success")
+                                this.getData()
+                            }
+
+                        })
+                    }
+                })
             }
         },
         mounted(){
