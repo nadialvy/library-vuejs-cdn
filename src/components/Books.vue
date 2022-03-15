@@ -13,7 +13,7 @@
                         List Book
                     <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right pt-2 pb-2">Add</button>
                     <div class="dataTable-search float-right mr-4">
-                        <input class="dataTable-input" placeholder="Search book name..." type="text" v-model="search">
+                        <input class="dataTable-input" placeholder="Search..." type="text" v-model="search">
                     </div>
                 </div>
                 <div class="card-body">
@@ -173,6 +173,8 @@
                     .then(resp => {
                         swal("Good Job", resp.data.message, "success")
                 })
+
+                this.getData()
             },
             saveData(){
                 let token = {
@@ -234,9 +236,14 @@
         },
         computed: {
             filteredBooks: function(){
+                // return this.books.filter((book) => {
+                //     return book.book_name.toLowerCase().match(this.search.toLowerCase());
+                    
+                // });
+
                 return this.books.filter((book) => {
-                    return book.book_name.toLowerCase().match(this.search.toLowerCase());
-                });
+                    return book.book_name.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 || book.author.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 || book.desc.toLowerCase().indexOf(this.search.toLowerCase()) >= 0;
+                }); 
             }
         },
         mounted(){
