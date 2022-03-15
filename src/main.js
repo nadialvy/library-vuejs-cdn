@@ -1,8 +1,10 @@
 Vue.filter('snippet', function(value){
-    return value.slice(0,70) + '...';
+    return value.slice(0,170) + '...';
   });
 
 var api_url = "http://localhost:8000/api";
+var image_url = "http://localhost:8000/"; //load image
+
 
 // konfigurasi route 
 var router = [
@@ -30,6 +32,11 @@ var router = [
         path:"/book_borrow",
         name: "Book Borrows",
         component: httpVueLoader("./src/components/BookBorrows.vue")
+    },
+    {
+        path:"/book_return",
+        name: "Book Returns",
+        component: httpVueLoader("./src/components/BookReturn.vue")
     }
 ];
 

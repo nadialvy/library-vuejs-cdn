@@ -51,8 +51,7 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <router-link to="/book_borrow" class="nav-link">Borrow</router-link>
-                                    <a class="nav-link" >Detail Borrow</a>
-                                    <a class="nav-link" >Return</a>
+                                    <router-link to="/book_return" class="nav-link">Return</router-link>
                                 </nav>
                             </div>
 
