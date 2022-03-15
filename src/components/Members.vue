@@ -13,7 +13,7 @@
                         List Members
                         <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right">Add</button>
                         <div class="dataTable-search float-right mr-4">
-                            <input class="dataTable-input" placeholder="Search member name..." type="text" v-model="search">
+                            <input class="dataTable-input" placeholder="Search..." type="text" v-model="search">
                         </div>
                 </div>
                 <div class="card-body">
@@ -216,7 +216,7 @@
         computed: {
             filteredMember(){
                 return this.members.filter((member) => {
-                    return member.student_name.toLowerCase().match(this.search.toLowerCase())
+                    return member.student_name.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 || member.class_name.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 || member.group.toLowerCase().indexOf(this.search.toLowerCase()) >= 0;
                 })
             }
         },
