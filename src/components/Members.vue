@@ -22,6 +22,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
+                                <th>Photo</th>
                                 <th>Class</th>
                                 <th>Major</th>
                                 <th>Action</th>
@@ -29,12 +30,14 @@
                         </thead>
                         <tbody>
                             <tr v-for="(member, index) in filteredMember" :key="index">
-                                <td> {{ member.student_id }} </td>
+                                <td> {{ index+1 }} </td>
                                 <td> {{ member.student_name }} </td>
+                                <td> <img :src="image_url + 'student_images/' + member.image" alt="Student Photo" width="65" height="65"></td>
                                 <td> {{ member.class_name }} </td>
                                 <td> {{ member.group }} </td>
                                 <td>
                                     <button class="btn btn-info"  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                    <button class="btn btn-dark"  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image fa-fw"></i></button>
                                     <button class="btn btn-danger" v-on:click="deleteData(member.student_id)" ><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
@@ -44,6 +47,7 @@
             </div>
         </div>
         
+        <!-- main modal  -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -97,6 +101,31 @@
                 </div>
             </div>
         </div>
+
+         <!-- student photo modal  -->
+        <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Photo </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="">Student Photo</label>
+                        <input type="file" ref="file"  @change="uploadPhoto()" class="form-control" required>
+                    </div>
+                        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button v-on:click="upload(member_id)" type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -115,7 +144,8 @@
                 gender: '',
                 address: '',
                 grade: '',
-                search: ''
+                search: '',
+                student_photo: ''
             }
            
         },
@@ -156,6 +186,27 @@
                 this.address = memberData.address,
                 this.grade = memberData.class_id,
                 this.action = 'Update'
+            },
+            uploadPhoto(){
+                this.student_photo = this.$refs.file.files[0]; //knp 0? karena filenya cuma 1. (index ke 0)
+            },
+            upload(id){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization'),
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+
+                let form = new FormData();
+                form.append('student_photo', this.student_photo)  
+
+                 axios.post(api_url + '/Students/UploadCover/'+ id, form, token)
+                    .then(resp => {
+                        swal("Good Job", resp.data.message, "success")
+                })
+
+                this.getData()
             },
             saveData(){
                 let token = {
@@ -225,4 +276,4 @@
         }
     }
 </script>
-
+''
