@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <table id="datatablesSimple" class="table table-hover table-striped">
                         <thead>
-                            <tr>
+                            <tr class="text-md-center">
                                 <th>No</th>
                                 <th>Book Name</th>
                                 <th>Cover</th>
@@ -72,7 +72,7 @@
 
                     <div class="mb-3">
                         <label for="">Description</label>
-                        <textarea v-model="desc" class="form-control" required style="height: 100px"></textarea>
+                        <textarea v-model="desc" class="form-control" required style="height: 100px" @keypress.enter="saveData()"></textarea>
                     </div>        
                 </div>
                 <div class="modal-footer">
@@ -151,7 +151,8 @@
                 this.book_id = bookData.book_id,
                 this.book_name = bookData.book_name,
                 this.author = bookData.author,
-                this.desc = bookData.desc
+                this.desc = bookData.desc,
+                this.book_cover = '',
                 this.action = 'Update'
                 
             }, 
@@ -172,9 +173,11 @@
                  axios.post(api_url + '/Book/UploadCover/'+ id, form, token)
                     .then(resp => {
                         swal("Good Job", resp.data.message, "success")
+
+                        location.reload();
                 })
 
-                this.getData()
+                
             },
             saveData(){
                 let token = {
@@ -221,7 +224,7 @@
                     icon: 'warning',
                     buttons: [true, 'Yes delete it']
                     }).then((value) => {
-                    if (value) {
+                    if(value) {
                        axios.delete(api_url + '/Book/' + id, token)
                         .then(resp => {
                             if(resp.data.status === 1){

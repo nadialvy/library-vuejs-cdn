@@ -29,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(member, index) in filteredMember" :key="index">
+                            <tr v-for="(member, index) in members" :key="index">
                                 <td> {{ index+1 }} </td>
                                 <td> {{ member.student_name }} </td>
                                 <td> <img :src="image_url + 'student_images/' + member.image" alt="Student Photo" width="65" height="65"></td>

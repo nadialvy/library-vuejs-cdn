@@ -23,8 +23,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
-                                <th>Book</th>
-                                <th>Qty</th>
                                 <th>Date of Borrowing</th>
                                 <th>Date of Returning</th>
                                 <th>Action</th>
@@ -35,12 +33,12 @@
                             <tr v-for="(borrowBook, i) in borrowBooks" :key="i">
                                 <td> {{ i+1 }} </td>
                                 <td> {{ borrowBook.student_name }} </td>
-                                <td> </td>
-                                <td> </td>
                                 <td> {{ borrowBook.date_of_borrowing }} </td>
                                 <td> {{ borrowBook.date_of_returning }} </td>
                                  <td>
-                                    <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
+                                    <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
+                                    <button class="btn btn-success" type="button" data-toggle="modal" data-target="#dataReturnModal"><i class="fas fa-check-square"></i></button>
                                     <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
                                 </td>
                             </tr>
@@ -75,7 +73,7 @@
 
                             <div class="mb-3">
                                 <label for="">Date Borrowing</label>
-                                <input type="date" v-model="date_of_borrowing" class="form-control" required>       
+                                <input type="date" v-model="myDate" class="form-control" required>       
                             </div>
 
                             <div class="mb-3">
@@ -86,28 +84,31 @@
 
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel"> Borrow Details </h5>
+                            <button @click="addItem" class="btn btn-info">+</button>
                         </div>
 
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="book_name">Book Name</label>
-                                <select class="form-control" id="book_name" v-model="book_name" required>
-                                    <option 
-                                        v-for="book in books" :key="book" 
-                                        :value="book.book_id"
-                                    > 
-                                            {{ book.book_name }} 
-                                    </option>
-                                </select>
-                            </div>
+                            <div class="row" v-for="(detail, counter) in detail_borrow" :key="counter">
+                                <div class="input-group mb-3">
+                                        <select class="form-select input-sm" id="book_name" v-model="detail.book_id" required aria-placeholder="Book name">
+                                        <option value="" disabled>Choose book name</option>
+                                        <option 
+                                            v-for="book in books" :key="book" 
+                                            :value="book.book_id"
+                                        > 
+                                                {{ book.book_name }} 
+                                        </option>
+                                    </select>
+                            
+                                    <!-- declaration for second field -->
+                                    <input type="number" class="form-control input-sm" placeholder="Quantity" v-model="detail.qty" />
 
-                            <div class="mb-3">
-                                <label for="">Quantity</label>
-                                <input type="number" v-model="qty" class="form-control" required>       
+                                    <button type="button" @click="deleteItem(counter)" class="btn btn-danger">-</button>
+                                    
+                                </div>
                             </div>
                         </div>
-
-                        
+                    
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
@@ -130,18 +131,30 @@
                 search:'',
                 action: '',
 
+                //input data today automatic
+                myDate : new Date().toISOString().slice(0,10),
+
                 // update 
-                book_borrow_id: '',
+                // book_borrow_id: '',
 
                 // v-model 
                 student_name: '',
                 date_of_borrowing: '',
                 date_of_returning: '',
-                book_name: '',
-                qty: ''
+                detail_borrow: [],
+
             }
         },
         methods: {
+            addItem(){
+                this.detail_borrow.push({
+                    book_id: '',
+                    qty: '',
+                })
+            },
+            deleteItem(counter){
+                this.detail_borrow.splice(counter, 1)
+            }, 
             getData(){
                 let token = {
                     headers : {
@@ -152,11 +165,6 @@
                 axios.get(api_url + '/BookBorrow', token)
                 .then(resp => {
                     this.borrowBooks = resp.data
-                })
-
-                axios.get(api_url + '/BookBorrowDetails', token)
-                .then(resp => {
-                    this.details = resp.data
                 })
 
                 axios.get(api_url + '/Students', token)
@@ -174,20 +182,15 @@
                 this.student_id = '',
                 this.date_of_borrowing = '',
                 this.date_of_returning = '',
-
-                // book details 
-                this.book_name = '',
-                this.qty = '',
-
                 this.action = 'Add'
             },
-            editData(bookBorrow){
-                this.book_borrow_id = bookBorrow.book_borrow_id,
-                this.student_name = bookBorrow.student_id,
-                this.date_of_borrowing = bookBorrow.date_of_borrowing,
-                this.date_of_returning = bookBorrow.date_of_returning,
-                this.action = 'Update'
-            },
+            // editData(bookBorrow){
+            //     this.book_borrow_id = bookBorrow.book_borrow_id,
+            //     this.student_name = bookBorrow.student_id,
+            //     this.date_of_borrowing = bookBorrow.date_of_borrowing,
+            //     this.date_of_returning = bookBorrow.date_of_returning,
+            //     this.action = 'Update'
+            // },
             saveData(){
                 let token = {
                     headers : {
@@ -195,29 +198,33 @@
                     }
                 }
 
-                let form_borrow = {
+                let form = {
                     'student_id' : this.student_name,
-                    'date_of_borrowing' : this.date_of_borrowing,
-                    'date_of_returning' : this.date_of_returning
+                    'date_of_borrowing' : this.myDate,
+                    'date_of_returning' : this.date_of_returning,
+                    'detail' : this.detail_borrow
                 }
 
-                let form_details = {
-                    'book_borrow_id' : '',
-                    'book_id' : this.book_name,
-                    'qty' : this.qty
-                }
+                axios.post(api_url + '/BookBorrow', form, token)
+                    .then(resp => {
+                        swal("Good Job", 'Success create new data', "success")
+                        location.reload()
+                        this.getData()
+                })
 
-                if(this.action === 'Add'){
-                    axios.post(api_url + '/BookBorrow', token)
-                    .then(resp => {
-                        swal("Good Job", 'Success create new data', "success")
-                    })
-                } else {
-                    axios.put(api_url + '/BookBorrow/' + this.book_borrow_id, form, token)
-                    .then(resp => {
-                        swal("Good Job", 'Success create new data', "success")
-                    })
-                }
+                // // insert book borrow 
+                // if(this.action === 'Add'){
+                //     axios.post(api_url + '/BookBorrow', form, token)
+                //     .then(resp => {
+                //         swal("Good Job", 'Success create new data', "success")
+                //         this.getData()
+                //     })
+                // } else {
+                //     axios.put(api_url + '/BookBorrow/' + this.book_borrow_id, form, token)
+                //     .then(resp => {
+                //         swal("Good Job", 'Success create new data', "success")
+                //     })
+                // }
 
                 this.getData()
             },
