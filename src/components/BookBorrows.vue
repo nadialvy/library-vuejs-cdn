@@ -25,6 +25,7 @@
                                 <th>Name</th>
                                 <th>Date of Borrowing</th>
                                 <th>Date of Returning</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -35,11 +36,12 @@
                                 <td> {{ borrowBook.student_name }} </td>
                                 <td> {{ borrowBook.date_of_borrowing }} </td>
                                 <td> {{ borrowBook.date_of_returning }} </td>
+                                <td></td>
                                  <td>
-                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
-                                    <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
+                                    <button class="btn btn-info" v-on:click="detail(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
                                     <button class="btn btn-success" type="button" data-toggle="modal" data-target="#dataReturnModal"><i class="fas fa-check-square"></i></button>
                                     <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                    <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -71,7 +73,10 @@
                                 </select>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="alert alert-info" role="alert">
+                                The date of borrowing will be automatically generated, and the date of returning will be automatically generated the next 7 days after the date of borrowing.
+                            </div>
+                            <!-- <div class="mb-3">
                                 <label for="">Date Borrowing</label>
                                 <input type="date" v-model="myDate" class="form-control" required>       
                             </div>
@@ -79,7 +84,7 @@
                             <div class="mb-3">
                                 <label for="">Date Returning</label>
                                 <input type="date" v-model="date_of_returning" class="form-control" required>       
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="modal-header">
@@ -116,6 +121,47 @@
                     </div>
                 </div>
             </div>
+
+             <!-- detail modal  -->
+            <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"> Detail Borrow Book </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                           <table class="table">
+                               <thead>
+                                    <tr>
+                                    <th>No</th>
+                                    <th>Book Name</th>
+                                    <th>Author</th>
+                                    <th>Image</th>
+                                    <th>Quantity</th>
+                                    </tr>
+                               </thead>
+                                <tbody>
+                                    <tr v-for="(detail, i) in detail_borrow" :key="i">
+                                        <td> {{ i+1 }} </td>
+                                        <td> {{ detail.book_name }} </td>
+                                        <td> {{ detail.author }} </td>
+                                        <td> <img :src="image_url + 'images/' + detail.image" alt="Book Cover" width="70"></td>
+                                        <td> {{ detail.qty }} </td>
+                                    </tr>
+                                </tbody>
+                           </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -142,7 +188,6 @@
                 date_of_borrowing: '',
                 date_of_returning: '',
                 detail_borrow: [],
-
             }
         },
         methods: {
@@ -184,13 +229,19 @@
                 this.date_of_returning = '',
                 this.action = 'Add'
             },
-            // editData(bookBorrow){
-            //     this.book_borrow_id = bookBorrow.book_borrow_id,
-            //     this.student_name = bookBorrow.student_id,
-            //     this.date_of_borrowing = bookBorrow.date_of_borrowing,
-            //     this.date_of_returning = bookBorrow.date_of_returning,
-            //     this.action = 'Update'
-            // },
+            detail(book_borrow_id){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
+
+                axios.get(api_url + '/BookBorrowDetails/'+ book_borrow_id, token)
+                .then(resp => {
+                    console.log(resp.data)
+                    this.detail_borrow = resp.data
+                })
+            },
             saveData(){
                 let token = {
                     headers : {
@@ -211,21 +262,6 @@
                         location.reload()
                         this.getData()
                 })
-
-                // // insert book borrow 
-                // if(this.action === 'Add'){
-                //     axios.post(api_url + '/BookBorrow', form, token)
-                //     .then(resp => {
-                //         swal("Good Job", 'Success create new data', "success")
-                //         this.getData()
-                //     })
-                // } else {
-                //     axios.put(api_url + '/BookBorrow/' + this.book_borrow_id, form, token)
-                //     .then(resp => {
-                //         swal("Good Job", 'Success create new data', "success")
-                //     })
-                // }
-
                 this.getData()
             },
             deleteData(id){
@@ -259,6 +295,7 @@
         },
         mounted(){
             this.getData()
+            // this.detail()
         }
     }
 </script>
