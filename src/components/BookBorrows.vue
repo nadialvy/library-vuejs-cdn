@@ -76,15 +76,7 @@
                             <div class="alert alert-info" role="alert">
                                 The date of borrowing will be automatically generated, and the date of returning will be automatically generated the next 7 days after the date of borrowing.
                             </div>
-                            <!-- <div class="mb-3">
-                                <label for="">Date Borrowing</label>
-                                <input type="date" v-model="myDate" class="form-control" required>       
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="">Date Returning</label>
-                                <input type="date" v-model="date_of_returning" class="form-control" required>       
-                            </div> -->
+                            
                         </div>
 
                         <div class="modal-header">
