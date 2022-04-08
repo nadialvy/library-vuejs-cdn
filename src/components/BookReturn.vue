@@ -23,21 +23,18 @@
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Class</th>
-                                <th>Major</th>
-                                <th>Action</th>
+                                <th>Return Date</th>
+                                <th>Fine</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr v-for="(member, index) in filteredMember" :key="index">
-                                <td> {{ member.student_id }} </td>
-                                <td> {{ member.student_name }} </td>
-                                <td> {{ member.class_name }} </td>
-                                <td> {{ member.group }} </td>
-                                <td>
-                                    <button class="btn btn-info"  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
-                                    <button class="btn btn-danger" v-on:click="deleteData(member.student_id)" ><i class="fas fa-trash-alt fa-fw"></i></button>
-                                </td>
-                            </tr> -->
+                            <tr v-for="(data, index) in book_return" :key="index">
+                                <td> {{ index+1 }} </td>
+                                <td> {{ data.student_name }} </td>
+                                <td> {{ data.class_name }} </td>
+                                <td> {{ data.date_of_returning }} </td>
+                                <td> Rp.{{ data.fine }} </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -51,11 +48,22 @@
         data(){
             return{
                 search: '',
+                book_return: [],
             }
         },
         methods: {
             getData(){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
 
+                axios.get(api_url + '/BookReturn', token)
+                .then(resp => {
+                    this.book_return = resp.data
+                    // console.log(this.book_return));
+                });
             }
         },
         mounted(){
