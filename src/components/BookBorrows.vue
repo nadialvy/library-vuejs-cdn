@@ -33,11 +33,14 @@
                                 <td> {{ borrowBook.student_name }} </td>
                                 <td> {{ borrowBook.date_of_borrowing }} </td>
                                 <td> {{ borrowBook.date_of_returning }} </td>
-                                <td> {{ borrowBook.status }} </td>
+                                <td> 
+                                    <span v-if="borrowBook.status == 'Late' " class="badge badge-danger">Late</span>
+                                    <span v-else class="badge badge-success">Not Late</span>
+                                </td>
                                  <td>
                                     <button class="btn btn-info" v-on:click="detail(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
-                                    <button class="btn btn-success" v-on:click="returnBook(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#returnModal"><i class="fas fa-check-square"></i></button>
-                                    <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                    <button class="btn btn-success" v-on:click="returnData(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#returnModal"><i class="fas fa-check-square"></i></button>
+                                    <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)" :disabled="isDisabled"><i class="fas fa-trash-alt fa-fw"></i></button>
                                     <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
                                 </td>
                             </tr>
@@ -164,20 +167,20 @@
                                 <tr>
                                     <th>Late for (days)</th>
                                     <th>Fine</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="ret in return_data" :key="ret">
                                     <td> {{ ret.late_for }} </td>
                                     <td> {{ ret.fine }} </td>
+                                    <td>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" v-on:click="returnBook(ret.book_borrow_id)" class="btn btn-primary" data-dismiss="modal">Return Book</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Return Book</button>
                     </div>
                 </div>
             </div>
@@ -269,6 +272,24 @@
                 this.getData()
                 location.reload()
             },
+            returnBook(id){
+                let token = {
+                    headers : {
+                        'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
+                    }
+                }
+
+                let form = {
+                    'book_borrow_id' : id
+                }
+
+                axios.post(api_url + '/BookReturn', form, token)
+                    .then(resp => {
+                        swal("Good Job", 'Success return book', "success")
+                        this.getData()
+                })
+                this.getData()
+            },
             detail(book_borrow_id){
                 let token = {
                     headers : {
@@ -282,7 +303,7 @@
                     this.detail_borrow = resp.data
                 })
             },
-            returnBook(book_borrow_id){
+            returnData(book_borrow_id){
                 let token = {
                     headers : {
                         'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
@@ -295,10 +316,16 @@
                     console.log(this.return_data);
                     
                 })
+            },
+            isDisabled(){
+                //if current date = tanggal pinjam maka false
+                //else true
+                return true
             }
         },
         mounted(){
-            this.getData()
+            this.getData(),
+            this.isDisabled()
         }
     }
 </script>
