@@ -1,49 +1,40 @@
 <template>
     <div>
-        <div class="container-fluid px-4">
-            <h1 class="mt-4">Members</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                <li class="breadcrumb-item active">Members</li>
-            </ol>
+        <div class="card mb-4">
+            <div class="card-header p-5">
+                <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm pl-5 pr-5 pt-2 pb-2 mt-1">Add</button>
+                <div class="dataTable-search float-right mr-4">
+                    <input class="dataTable-input pl-5 pr-5" placeholder="Search..." type="text" v-model="search">
+                </div>
+            </div>
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                        List Members
-                        <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right">Add</button>
-                        <div class="dataTable-search float-right mr-4">
-                            <input class="dataTable-input" placeholder="Search..." type="text" v-model="search">
-                        </div>
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple" class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Photo</th>
-                                <th>Class</th>
-                                <th>Major</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(member, index) in members" :key="index">
-                                <td> {{ index+1 }} </td>
-                                <td> {{ member.student_name }} </td>
-                                <td> <img :src="image_url + 'student_images/' + member.image" alt="Student Photo" width="65" height="65"></td>
-                                <td> {{ member.class_name }} </td>
-                                <td> {{ member.group }} </td>
-                                <td>
-                                    <button class="btn btn-info"  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
-                                    <button class="btn btn-dark"  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image fa-fw"></i></button>
-                                    <button class="btn btn-danger" v-on:click="deleteData(member.student_id)" ><i class="fas fa-trash-alt fa-fw"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="card-body">
+                <table id="datatablesSimple" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Photo</th>
+                            <th>Class</th>
+                            <th>Major</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(member, index) in members" :key="index">
+                            <td> {{ index+1 }} </td>
+                            <td> {{ member.student_name }} </td>
+                            <td> <img :src="image_url + 'student_images/' + member.image" alt="Student Photo" width="65" height="65"></td>
+                            <td> {{ member.class_name }} </td>
+                            <td> {{ member.group }} </td>
+                            <td>
+                                <button class="btn btn-info btn-sm "  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button>
+                                <button class="btn btn-dark btn-sm "  v-on:click="editData(member)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image fa-fw"></i></button>
+                                <button class="btn btn-danger btn-sm " v-on:click="deleteData(member.student_id)" ><i class="fas fa-trash-alt fa-fw"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         
@@ -95,8 +86,8 @@
                         
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
+                    <button type="button" class="btn btn-secondary btn-sm " data-dismiss="modal">Close</button>
+                    <button v-on:click="saveData()" type="button" class="btn btn-primary btn-sm " data-dismiss="modal">{{this.action}}</button>
                 </div>
                 </div>
             </div>
@@ -120,8 +111,8 @@
                         
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button v-on:click="upload(member_id)" type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
+                    <button type="button" class="btn btn-secondary btn-sm " data-dismiss="modal">Close</button>
+                    <button v-on:click="upload(member_id)" type="button" class="btn btn-primary btn-sm " data-dismiss="modal">Upload</button>
                 </div>
                 </div>
             </div>

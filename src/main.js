@@ -1,5 +1,5 @@
 Vue.filter('snippet', function(value){
-    return value.slice(0,170) + '...';
+    return value.slice(0,50) + '...';
   });
 
 var api_url = "http://localhost:8000/api";

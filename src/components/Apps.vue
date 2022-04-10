@@ -1,122 +1,89 @@
 <template>
     <div>
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="#">My Perpus</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!" @click="logout()">Logout</a></li>
-                    </ul>
-                </li>
+        
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <nav class="navbar navbar-expand-lg navbar-light sticky-top" data-navbar-on-scroll="data-navbar-on-scroll">
+        <div class="container"><a class="navbar-brand" href="index.html"><img src="src/assets/img/Frame 1 (1).png" height="31" alt="logo" /></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"> </span></button>
+          <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><router-link to="/book" class="nav-link">Book</router-link></li>
+              <li class="nav-item"><router-link to="/member" class="nav-link"> Member</router-link></li>
+              <li class="nav-item"><router-link to="/book_borrow" class="nav-link">Borrow</router-link></li>
+              <li class="nav-item"><router-link to="/book_return" class="nav-link">Return</router-link></li>
+              <li class="nav-item"><a class="nav-link" @click="logout()">Logout</a></li>
             </ul>
-        </nav>
-
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <a class="nav-link">
-                                <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                                <router-link to="/" class="nav-link">Dashboard</router-link>
-                                
-                            </a>
-
-                            <div class="sb-sidenav-menu-heading">Master Data</div>
-                            <div class="nav-link">
-                                <div class="sb-nav-link-icon"><i class=" fas fa-solid fa-book"></i></div>
-                                <router-link to="/book" class="nav-link">Book</router-link>
-                               
-                            </div>
-                            
-                            <div class="nav-link">
-                                <div class="sb-nav-link-icon"><i class="fas fa-solid fa-user"></i></div>
-                                <router-link to="/member" class="nav-link"> Member</router-link>
-                               
-                            </div>
-
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Transaction
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <router-link to="/book_borrow" class="nav-link">Borrow</router-link>
-                                    <router-link to="/book_return" class="nav-link">Return</router-link>
-                                </nav>
-                            </div>
-
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" @click="logout()">Logout</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
-                </nav>
-            </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <!-- content  -->
-                    <router-view></router-view>
-                </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; My Library 2022</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            <!-- <div class="d-flex ms-lg-4"><a class="btn btn-secondary-outline" href="#!">Sign In</a><a class="btn btn-warning ms-3" href="#!">Sign Up</a></div> -->
+          </div>
         </div>
+      </nav>
+      <section class="pt-7">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-md-6 text-md-start text-center py-6">
+              <h1 class="mb-4 fs-9 fw-bold">Reading Just Got Easier</h1>
+              <p class="mb-6 lead text-secondary">Read books, share reading collections and socialize at the same time.<br class="d-none d-xl-block" />Anywhere, anytime comfortably with everyone.<br class="d-none d-xl-block" /></p>
+              <!-- <p> Halo {{}} </p> -->
+              <!-- <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#!" role="button">Get started</a><a class="btn btn-link text-warning fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div> -->
+            </div>
+            <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="src/assets/img/hero/6263.jpg" alt="" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+            <router-view></router-view>
+      </section>
+
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+      <section class="text-center py-0">
+
+        <div class="container">
+          <div class="container border-top py-3">
+            <div class="row justify-content-between">
+              <div class="col-12 col-md-auto mb-1 mb-md-0">
+                <p class="mb-0">&copy; 2022 IPusnas </p>
+              </div>
+              <div class="col-12 col-md-auto">
+                <p class="mb-0">
+                  Made with<span class="fas fa-heart mx-1 text-danger"> </span>by <a class="text-decoration-none ms-1" href="https://themewagon.com/" target="_blank">ThemeWagon</a></p>
+              </div>
+            </div>
+          </div>
+        </div><!-- end of .container-->
+
+      </section>
+      <!-- <section> close ============================-->
+      <!-- ============================================-->
+
+
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+    <!-- 
+
+    <div class="modal fade" id="popupVideo" tabindex="-1" aria-labelledby="popupVideo" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <iframe class="rounded" style="width:100%;height:500px;" src="https://www.youtube.com/embed/_lhdhL4UDIo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+
     </div>
 </template>
+
 
 <script>
     module.exports = {
         data(){
             return{
-
+              name: '',
             }
         },
         methods: {
@@ -134,3 +101,9 @@
         }
     }
 </script>
+
+<style scoped>
+ .navbar{
+     background-color: #fff;
+ }
+</style>

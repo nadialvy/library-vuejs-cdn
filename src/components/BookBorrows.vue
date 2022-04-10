@@ -1,18 +1,10 @@
 <template>
     <div>
-        <div class="container-fluid px-4">
-            <h1 class="mt-4">Tables</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                <li class="breadcrumb-item active">Book Borrow</li>
-            </ol>
             <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    List Book Borrow
-                    <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right pt-2 pb-2">Add</button>
+                <div class="card-header p-5">
+                    <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm pl-5 pr-5 pt-2 pb-2 mt-1">Add</button>
                     <div class="dataTable-search float-right mr-4">
-                        <input class="dataTable-input" placeholder="Search borrower name..." type="text" v-model="search">
+                        <input class="dataTable-input pl-5 pr-5" placeholder="Search borrower name..." type="text" v-model="search">
                     </div>
                 </div>
                 <div class="card-body">
@@ -38,9 +30,9 @@
                                     <span v-else class="badge badge-success">Not Late</span>
                                 </td>
                                  <td>
-                                    <button class="btn btn-info" v-on:click="detail(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
-                                    <button class="btn btn-success" v-on:click="returnData(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#returnModal"><i class="fas fa-check-square"></i></button>
-                                    <button class="btn btn-danger" v-on:click="deleteData(borrowBook.book_borrow_id)" :disabled="isDisabled"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                    <button class="btn btn-info btn-sm" v-on:click="detail(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
+                                    <button class="btn btn-success btn-sm" v-on:click="returnData(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#returnModal"><i class="fas fa-check-square"></i></button>
+                                    <button class="btn btn-danger btn-sm" v-on:click="deleteData(borrowBook.book_borrow_id)" :disabled="isDisabled"><i class="fas fa-trash-alt fa-fw"></i></button>
                                     <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
                                 </td>
                             </tr>
@@ -48,7 +40,6 @@
                     </table>
                 </div>
             </div>
-        </div>
 
         <!-- modal  -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -82,7 +73,7 @@
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"> Borrow Details </h5>
-                        <button @click="addItem" class="btn btn-info">+</button>
+                        <button @click="addItem" class="btn btn-info btn-sm">+</button>
                     </div>
 
                     <div class="modal-body">
@@ -101,15 +92,15 @@
                                 <!-- declaration for second field -->
                                 <input type="number" class="form-control input-sm" placeholder="Quantity" v-model="detail.qty" />
 
-                                <button type="button" @click="deleteItem(counter)" class="btn btn-danger">-</button>
+                                <button type="button" @click="deleteItem(counter)" class="btn btn-danger btn-sm">-</button>
                                 
                             </div>
                         </div>
                     </div>
                 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                        <button v-on:click="saveData()" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">{{this.action}}</button>
                     </div>
                 </div>
             </div>
@@ -175,8 +166,8 @@
                                     <td> {{ ret.late_for }} </td>
                                     <td> {{ ret.fine }} </td>
                                     <td>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" v-on:click="returnBook(ret.book_borrow_id)" class="btn btn-primary" data-dismiss="modal">Return Book</button>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                        <button type="button" v-on:click="returnBook(ret.book_borrow_id)" class="btn btn-primary btn-sm" data-dismiss="modal">Return Book</button>
                                     </td>
                                 </tr>
                             </tbody>

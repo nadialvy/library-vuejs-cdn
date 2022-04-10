@@ -1,50 +1,30 @@
 <template>
-    <div>
-        <div class="container-fluid px-4">
-            <h1 class="mt-4">Book</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active">Book</li>
-            </ol>
-                       
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                        List Book
-                    <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm float-right pt-2 pb-2">Add</button>
-                    <div class="dataTable-search float-right mr-4">
-                        <input class="dataTable-input" placeholder="Search..." type="text" v-model="search">
-                    </div>
+    <div>            
+        <div class="card mb-4">
+            <div class="card-header p-5">
+                <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm pl-5 pr-5 pt-2 pb-2 mt-1">Add</button>
+                <div class="dataTable-search float-right mr-4">
+                    <input class="dataTable-input pl-5 pr-5" placeholder="Search..." type="text" v-model="search">
                 </div>
-                <div class="card-body">
-                    <table id="datatablesSimple" class="table table-hover table-striped">
-                        <thead>
-                            <tr class="text-md-center">
-                                <th>No</th>
-                                <th>Book Name</th>
-                                <th>Cover</th>
-                                <th>Author</th>
-                                <th>Description</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+            </div>
 
-                        <tbody>
-                            <tr v-for="(book, i) in filteredBooks" :key="i">
-                                <td> {{ i+1 }} </td>
-                                <td> {{ book.book_name }} </td>
-                                <td> <img :src="image_url + 'images/' + book.image" alt="Book Cover" width="100"></td>
-                                <td> {{ book.author }} </td>
-                                <td> {{ book.desc | snippet }} </td>
-                                <td>
-                                    <button class="btn btn-info" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#exampleModal"><small><i class="fas fa-pencil-alt fa-fw fa-sm"></i></small></button>
-                                    <button class="btn btn-dark mt-1" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#bookCoverModal"><small><i class="far fa-file-image fa-fw"></i></small></button>
-                                    <button class="btn btn-danger mt-1" v-on:click="deleteData(book.book_id)"><small><i class="fas fa-trash-alt fa-fw"></i></small></button>
-                                    
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="ml-1 row">
+                <div class="d-flex flex-wrap justify-content-sm-around">
+                    <div class="card mr-3 mb-5 mt-4 shadow bg-white rounded" style="width: 15rem;" v-for="(book, i) in filteredBooks" :key="i">
+                        <img :src="image_url + 'images/' + book.image" class="card-img-top" width="20" height="250" alt="Book">
+                        <div class="card-body">
+                            <h5 class="card-title"> {{ book.book_name }} </h5>
+                            <h6 class="card-text">{{ book.author }}</h6>
+                            <p class="card-text"> {{ book.desc | snippet }}</p>
+                        </div>
+                        <div class="card-header">
+                            <div class="d-flex justify-content-around">
+                                <button class="btn btn-info btn-sm" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#exampleModal"><small><i class="fas fa-pencil-alt fa-fw fa-sm"></i></small></button>
+                                <button class="btn btn-dark btn-sm" v-on:click="editData(book)" type="button" data-toggle="modal" data-target="#bookCoverModal"><small><i class="far fa-file-image fa-fw"></i></small></button>
+                                <button class="btn btn-danger btn-sm" v-on:click="deleteData(book.book_id)"><small><i class="fas fa-trash-alt fa-fw"></i></small></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,8 +56,8 @@
                     </div>        
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button v-on:click="saveData()" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">{{this.action}}</button>
                 </div>
                 </div>
             </div>
@@ -101,8 +81,8 @@
                         
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button v-on:click="upload(book_id)" type="button" class="btn btn-primary" data-dismiss="modal">Upload</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button v-on:click="upload(book_id)" type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Upload</button>
                 </div>
                 </div>
             </div>
