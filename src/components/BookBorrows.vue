@@ -1,45 +1,45 @@
 <template>
     <div>
-            <div class="card mb-4">
-                <div class="card-header p-5">
-                    <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm pl-5 pr-5 pt-2 pb-2 mt-1">Add</button>
-                    <div class="dataTable-search float-right mr-4">
-                        <input class="dataTable-input pl-5 pr-5" placeholder="Search borrower name..." type="text" v-model="search">
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple" class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Borrow Date</th>
-                                <th>Return Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(borrowBook, i) in borrowBooks" :key="i">
-                                <td> {{ i+1 }} </td>
-                                <td> {{ borrowBook.student_name }} </td>
-                                <td> {{ borrowBook.date_of_borrowing }} </td>
-                                <td> {{ borrowBook.date_of_returning }} </td>
-                                <td> 
-                                    <span v-if="borrowBook.status == 'Late' " class="badge badge-danger">Late</span>
-                                    <span v-else class="badge badge-success">Not Late</span>
-                                </td>
-                                 <td>
-                                    <button class="btn btn-info btn-sm" v-on:click="detail(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
-                                    <button class="btn btn-success btn-sm" v-on:click="returnData(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#returnModal"><i class="fas fa-check-square"></i></button>
-                                    <button class="btn btn-danger btn-sm" v-on:click="deleteData(borrowBook.book_borrow_id)" :disabled="isDisabled"><i class="fas fa-trash-alt fa-fw"></i></button>
-                                    <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="card mb-4">
+            <div class="card-header p-5">
+                <button v-on:click="addData()" type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-sm pl-5 pr-5 pt-2 pb-2 mt-1">Add</button>
+                <div class="dataTable-search float-right mr-4">
+                    <input class="dataTable-input pl-5 pr-5" placeholder="Search borrower name..." type="text" v-model="search">
                 </div>
             </div>
+            <div class="card-body">
+                <table id="datatablesSimple" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Borrow Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(borrowBook, i) in borrowBooks" :key="i">
+                            <td> {{ i+1 }} </td>
+                            <td> {{ borrowBook.student_name }} </td>
+                            <td> {{ borrowBook.date_of_borrowing }} </td>
+                            <td> {{ borrowBook.date_of_returning }} </td>
+                            <td> 
+                                <span v-if="borrowBook.status == 'Late' " class="badge badge-danger">Late</span>
+                                <span v-else class="badge badge-success">Not Late</span>
+                            </td>
+                                <td>
+                                <button class="btn btn-info btn-sm" v-on:click="detail(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#detailModal"><i class="fas fa-clipboard-list"></i></button>
+                                <button class="btn btn-success btn-sm" v-on:click="returnData(borrowBook.book_borrow_id)" type="button" data-toggle="modal" data-target="#returnModal"><i class="fas fa-check-square"></i></button>
+                                <button class="btn btn-danger btn-sm" v-on:click="deleteData(borrowBook.book_borrow_id)" :disabled="isDisabled"><i class="fas fa-trash-alt fa-fw"></i></button>
+                                <!-- <button class="btn btn-info" v-on:click="editData(borrowBook)" type="button" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt fa-fw"></i></button> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- modal  -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -236,8 +236,6 @@
             addData(){
                 // book borrow 
                 this.student_id = '',
-                this.date_of_borrowing = '',
-                this.date_of_returning = '',
                 this.action = 'Add'
             },
             saveData(){
@@ -246,11 +244,13 @@
                         'Authorization' : 'Bearer ' + this.$cookies.get('Authorization')
                     }
                 }
+                console.log('ID = ' + this.student_name);
+                console.log('DETAIL = ' + this.detail_borrow);
+                
+                
 
                 let form = {
                     'student_id' : this.student_name,
-                    'date_of_borrowing' : this.myDate,
-                    'date_of_returning' : this.date_of_returning,
                     'detail' : this.detail_borrow
                 }
 
@@ -261,7 +261,7 @@
                         this.getData()
                 })
                 this.getData()
-                location.reload()
+                // location.reload()
             },
             returnBook(id){
                 let token = {
